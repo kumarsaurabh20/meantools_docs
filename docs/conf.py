@@ -2,8 +2,8 @@
 
 # -- Project information
 
-project = 'meantools'
-copyright = '2023, Kumar'
+project = 'meantools_docs'
+copyright = '2024, Kumar'
 author = 'Kumar'
 
 release = '0.1'
