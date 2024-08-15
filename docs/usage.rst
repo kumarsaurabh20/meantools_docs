@@ -3,7 +3,7 @@ Usage
 
 
 Databases availability
-***********************
+=======================
 
 * The MetaNetX database release ``chem_prop.tsv``, which can be downloaded from their website: https://www.metanetx.org/mnxdoc/mnxref.html
 
@@ -14,7 +14,7 @@ Databases availability
 * ``LOTUS database`` is available in the form of an sqlite database within the GitHub repository.
 
 Database Preparation
-*********************
+=====================
 
 **These steps only need to be performed once: upon downloading the RetroRules database**.
 
@@ -44,6 +44,7 @@ This script does the following to prepare RetroRules content in a format require
 "Base rules": are the reaction rules that describe substructures that cannot be further decomposed in smaller substructures that are also in RetroRules. Base rules represent step number one in testing the metabolome data.
 
 "Small rules": are the reaction rules described at their smallest diameter, as found in RR.
+
 
 MEANtools workflow
 ===================
