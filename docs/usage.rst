@@ -2,8 +2,8 @@ Usage
 =====
 
 
-Databases availability
-=======================
+**Databases availability**
+~~~~~~~~~~~~~~~~~~~~~~~~
 
 * The MetaNetX database release ``chem_prop.tsv``, which can be downloaded from their website: https://www.metanetx.org/mnxdoc/mnxref.html
 
@@ -13,41 +13,47 @@ Databases availability
 
 * ``LOTUS database`` is available in the form of an sqlite database within the GitHub repository.
 
-Database Preparation
-=====================
+**Database Preparation**
+~~~~~~~~~~~~~~~~~~~~~~~
 
 **These steps only need to be performed once: upon downloading the RetroRules database**.
 
 Two inputs are needed for this:
 
-* The MetaNetX database release "chem_prop.tsv", which can be downloaded from their website: https://www.metanetx.org/mnxdoc/mnxref.html
-* The RetroRules database version "rr_01" in SQLite (named mvc.db), which can be downloaded from their website: https://retrorules.org/dl
+#. The MetaNetX database release "chem_prop.tsv", which can be downloaded from their website: https://www.metanetx.org/mnxdoc/mnxref.html
+#. The RetroRules database version "rr_01" in SQLite (named mvc.db), which can be downloaded from their website: https://retrorules.org/dl
 
 ``formatDatabase.py``
 
-This script does the following to prepare RetroRules content in a format required by MEANtools:
+   This script does the following to prepare RetroRules content in a format required by MEANtools:
 
-* The script parses the RetroRules and MetaNetX database to generate a CSV with reaction_ids and their associated mass_transitions. 
-
-   .. note::
-   Using the monoisotopic mass is recommended, with the optional flag: "--monoisotopic_mass"
-
-* It rounds and analyses the mass_transitions generated in previous step to make it compatible with the mass transitions that will later be identified by rdkit during the virtual molecule generation process. This script also generates some plots showing the transition degeneracy (answering questions such as how many reactions can be attributed to a specific mass_transition number).
-
-* It validates the SMILES in RetroRules reactions with that of the metabolites in MetaNetX. This is because some SMILES have small differences across the two databases. This script basically filters out these rules, leaving only those in which the molecular structures involved are identical as those described by MetaNetX. 
+   * The script parses the RetroRules and MetaNetX database to generate a CSV with reaction_ids and their associated mass_transitions. 
 
    .. note::
-   Using the optional flag "--use_greedy_rxn" is recommended. This flag will make the validation tests ignore differences in missing or extra H atoms (valence).
+   Using the monoisotopic mass is recommended, with the optional flag: --*monoisotopic_mass*
 
-* This script maps the relationships among rules in RR. Because the molecular structures in RR rules are all described in different diameters (substructures), many of these substructures are identical across several rules, or are substructures of more complex structures in other rules. This script identifies and output these relationship to optimize the speed at which rules are tested with the metabolome data. For example, this script will identify that a rule involving the substructure C-N-C does not need to be tested for a specific molecule if a rule involving the substructure C-N was already tested and was not found in the molecule.
+   * It rounds and analyses the mass_transitions generated in previous step to make it compatible with the mass transitions that will later be identified by rdkit during the virtual molecule generation process. This script also generates some plots showing the transition degeneracy (answering questions such as how many reactions can be attributed to a specific mass_transition number).
 
-"Base rules": are the reaction rules that describe substructures that cannot be further decomposed in smaller substructures that are also in RetroRules. Base rules represent step number one in testing the metabolome data.
+   * It validates the SMILES in RetroRules reactions with that of the metabolites in MetaNetX. This is because some SMILES have small differences across the two databases. This script basically filters out these rules, leaving only those in which the molecular structures involved are identical as those described by MetaNetX. 
 
-"Small rules": are the reaction rules described at their smallest diameter, as found in RR.
+   .. note::
+   Using the optional flag --*use_greedy_rxn* is recommended. This flag will make the validation tests ignore differences in missing or extra H atoms (valence).
+
+   * This script maps the relationships among rules in RR. Because the molecular structures in RR rules are all described in different diameters (substructures), many of these substructures are identical across several rules, or are substructures of more complex structures in other rules. This script identifies and output these relationship to optimize the speed at which rules are tested with the metabolome data. For example, this script will identify that a rule involving the substructure C-N-C does not need to be tested for a specific molecule if a rule involving the substructure C-N was already tested and was not found in the molecule.
+
+   * This script generates multiple following files:
+
+      *MassTransitions.csv* : Mass transitions estimated from the known reactions. 
+
+      *ValidateRulesWithOrigins.csv* : List of validated rules. 
+
+      *Base rules*: are the reaction rules that describe substructures that cannot be further decomposed in smaller substructures that are also in RetroRules. Base rules represent step number one in testing the metabolome data.
+
+      *Small rules*: are the reaction rules described at their smallest diameter, as found in RR.
 
 
-MEANtools workflow
-===================
+**MEANtools workflow**
+~~~~~~~~~~~~~~~~~~~~~~
 
 .. image:: images/workflow.png
    :width: 600
@@ -71,8 +77,8 @@ Squares:
 * Grey-colored squares are the PREDICTION phase.
 
 
-Input Description:
-==================
+**Input Description**
+~~~~~~~~~~~~~~~~~~~~
 
 Metabolomics data
 ~~~~~~~~~~~~~~~~~~
@@ -90,50 +96,102 @@ MEANtools processes the m/z and abundance inforation as separate files. So keepi
 
 File with abundance values will be used in the correlation step, where as file with m/z values will be used in the step where LOTUS database is queried. 
 
-``queryMassNPDB.py`` is used to query the mass/charge ratio CSV described above in a custom CSV list of molecules (and their monoisomeric mass), or LOTUS database stored as sqlite formatted database. When using a custom list of molecules, this is the format required:
+``queryMassNPDB.py`` is used to query the m/z ratio CSV described above in a custom CSV list of molecules (and their monoisomeric mass), or LOTUS database stored as sqlite formatted database. When using a custom list of molecules, this is the format required:
 
-::
+   . list-table::
+   :widths: 40 20 40
+   :header-rows: 1
 
-   molecule_id,molecule_monoisomeric_mass,SMILES
-   natural_product_1,70,CCCO
-   natural_procut_2,180.5,CCCCCCCCNC
+   * - Molecule ID
+     - natural_product_1
+     - natural_product_2
+   * - molecule_monoisomeric_mass
+     - 70
+     - 180
+   * - SMILES
+     - CCCO
+     - CCCCCCCCNC
 
 
 .. note::
-Matching mass/charge ratio data with metabolite structures requires a library of ions indicating how they affect the mass/charge ratio of a structure. This is provided within the github repository as a csv file. 
+Matching mass/charge ratio data with metabolite structures requires a library of ions indicating how they affect the m/z ratio of a structure. This is provided within the github repository as a csv file. 
 
 A CSV with the metabolome abundance of each metabolic feature (rows) in each sample (columns). A header must be included, ``with each sample being identically named in the transcriptome``.
 
-::
-   name,sample1,sample2
-   metabolite1,100,200
-   metabolite2,400,500
+   . list-table::
+   :widths: 15 15 70
+   :header-rows: 1
+
+   * - Metabolite ID
+     - metabolite1
+     - metabolite2
+   * - Sample1
+     - 100
+     - 400
+   * - Sample2
+     - 300
+     - 500
+
+
+Transcriptomics data
+~~~~~~~~~~~~~~~~~~~~~
 
 A CSV with the transcriptome abundance (expression mnatrix from the transcriptome data) of each locus_tag (rows) in each sample (columns). A header must be included, with each sample being identically named in the metabolome abundance file.
 
-::
-   name,sample1,sample2
-   gene1,55,66
-   gene2,77,88
+   . list-table::
+   :widths: 15 15 70
+   :header-rows: 1
+
+   * - Gene ID
+     - gene1
+     - gene2
+   * - Sample1
+     - 55
+     - 77
+   * - Sample2
+     - 66
+     - 88
+
 
 The above two files are used by ``corrMultiomics.py`` to generate a list of correlated metabolite-transcripts pairs. The correlation output is directly saved in the SQLIte database in the following format with a table name suffixed with ``*_correlation``:
 metabolite,gene,correlation,P
 
-::
-   metabolite1,gene1,0.7,0.001
-   metabolite2,gene1,0.6,0.0001
+   . list-table::
+   :widths: 20 20 30 30
+   :header-rows: 1
+
+   * - Metabolite ID
+     - metabolite1
+     - metabolite2
+   * - Gene ID
+     - gene1
+     - gene1
+   * - Correlation coeffecients
+     - 0.7
+     - 0.6
+   * - P-value
+     - 0.001
+     - 0.0001
+
 
 A CSV with PFAM annotations of the genes in the transcriptome. This can be integrated with the rest of the data at different steps (see workflow picture and help commands of each script). The format for these annotations is as follows (note that multiple pfams for a given gene can be be separated by semicolons ;):
 
-::
-   gene1,p450
-   gene2,Transferase
-   gene3,SQHop_cyclase_C;SQHop_cyclase_N
+   . list-table::
+   :widths: 30 80
+   :header-rows: 1
+
+   * - Gene ID
+     - gene1
+     - gene2
+     - gene3
+   * - Description
+     - p450
+     - Transferase
+     - SQHop_cyclase_C;SQHop_cyclase_N
 
 
 OMICS DATA PREPARATION
-=======================
-
+~~~~~~~~~~~~~~~~~~~~~~~
 
 ``queryMassLOTUS.py``
 
@@ -156,8 +214,6 @@ OMICS DATA PREPARATION
       * Metabolome (mass_signature abundance per sample)
    **Output**
       The script creates multiple tables in the project's SQLite database.
-   
-python strenth_of_association_btn_clusters.py -ft /Users/singh018/Documents/Meantools_v1/Jeon_tomato/new_MS_data/new_MS_data_combined.csv -qm /Users/singh018/Documents/Meantools_v1/Jeon_tomato/rnaseq.rpkm.csv -a /Users/singh018/Documents/Meantools_v1/Jeon_tomato/annotation/tomato.new.pfams_description.csv -dn /Users/singh018/Documents/Meantools_v1/Jeon_tomato/Jeon_bac.sqlite -o merged_clusters_bacterial.csv -m overalp
 
 
 ``merge_clusters.py``
@@ -255,22 +311,3 @@ Prediction
          * PFAM-retroRules file (csv)
       **Output**
          A folder with SVGs, and tables describing the predicted pathways, structures and their characteristics.
-
-
-
-.. _installation:
-
-Installation
-------------
-
-To use MEANtools, first install it using pip:
-
-Python-based dependencies
-
-   ``pip install meantools``
-
-External dependencies
-
-   
-
-
