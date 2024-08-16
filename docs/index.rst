@@ -18,4 +18,5 @@ Contents
 
    installation
    usage
-   api
+   results
+   tutorial

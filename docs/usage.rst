@@ -2,7 +2,7 @@ Usage
 =====
 
 
-**Databases availability**
+Databases availability
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
 * The MetaNetX database release ``chem_prop.tsv``, which can be downloaded from their website: https://www.metanetx.org/mnxdoc/mnxref.html
@@ -13,7 +13,7 @@ Usage
 
 * ``LOTUS database`` is available in the form of an sqlite database within the GitHub repository.
 
-**Database Preparation**
+Database Preparation
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 **These steps only need to be performed once: upon downloading the RetroRules database**.
@@ -52,22 +52,20 @@ Two inputs are needed for this:
       *Small rules*: are the reaction rules described at their smallest diameter, as found in RR.
 
 
-**MEANtools workflow**
+MEANtools workflow
 ~~~~~~~~~~~~~~~~~~~~~~
 
 .. image:: images/workflow.png
    :width: 600
 
-Arrows:
-~~~~~~~~
+*Arrows*:
 * Arrows in this workflow show where the input of which script comes from.
 
 * Grey arrows show the simplest workflow: only using metabolome information.
 
 * Red and blue arrows show the additional steps when using transcriptome data as well. Introducing transcriptomic data acts as a filter: reactions without associated correlated transcripts are filtered out. Because of this, when using the blue arrows (recommended), the red arrows are not necessary.
 
-Squares:
-~~~~~~~~
+*Squares*:
 * Blue-colored squares are the DATABASE PREPARATION phase. These scripts parse the RetroRules database to extract the data pertinent to MEANtools. These steps only need to be performed once: upon downloading the RetroRules database.
 
 * Green-colored squares are the OMICS DATA PREPARATION phase.
@@ -77,11 +75,11 @@ Squares:
 * Grey-colored squares are the PREDICTION phase.
 
 
-**Input Description**
+Input Description
 ~~~~~~~~~~~~~~~~~~~~
 
-Metabolomics data
-~~~~~~~~~~~~~~~~~~
+**Metabolomics data**
+
 
 A feature table from the metabolomics data is a processed data file where rows represent individual features and columns are different variables. For example, a typical feature table has columns like m/z, retention time (RT), and abundance/area-under-the-curve of each feature across samples. 
 
@@ -98,7 +96,7 @@ File with abundance values will be used in the correlation step, where as file w
 
 ``queryMassNPDB.py`` is used to query the m/z ratio CSV described above in a custom CSV list of molecules (and their monoisomeric mass), or LOTUS database stored as sqlite formatted database. When using a custom list of molecules, this is the format required:
 
-   . list-table::
+.. list-table:: Customized database
    :widths: 40 20 40
    :header-rows: 1
 
@@ -118,7 +116,7 @@ Matching mass/charge ratio data with metabolite structures requires a library of
 
 A CSV with the metabolome abundance of each metabolic feature (rows) in each sample (columns). A header must be included, ``with each sample being identically named in the transcriptome``.
 
-   . list-table::
+.. list-table:: Metabolome abundance table
    :widths: 15 15 70
    :header-rows: 1
 
@@ -133,18 +131,17 @@ A CSV with the metabolome abundance of each metabolic feature (rows) in each sam
      - 500
 
 
-Transcriptomics data
-~~~~~~~~~~~~~~~~~~~~~
+**Transcriptomics data**
 
 A CSV with the transcriptome abundance (expression mnatrix from the transcriptome data) of each locus_tag (rows) in each sample (columns). A header must be included, with each sample being identically named in the metabolome abundance file.
 
-   . list-table::
+.. list-table:: Transcriptome expression matrix
    :widths: 15 15 70
    :header-rows: 1
 
-   * - Gene ID
-     - gene1
-     - gene2
+   * - Transcripts ID
+     - transcript1
+     - transcript2
    * - Sample1
      - 55
      - 77
@@ -156,17 +153,17 @@ A CSV with the transcriptome abundance (expression mnatrix from the transcriptom
 The above two files are used by ``corrMultiomics.py`` to generate a list of correlated metabolite-transcripts pairs. The correlation output is directly saved in the SQLIte database in the following format with a table name suffixed with ``*_correlation``:
 metabolite,gene,correlation,P
 
-   . list-table::
-   :widths: 20 20 30 30
+.. list-table:: Transcript-Metabolite Correlation 
+   :widths: 40 40 20 20
    :header-rows: 1
 
    * - Metabolite ID
      - metabolite1
      - metabolite2
-   * - Gene ID
-     - gene1
-     - gene1
-   * - Correlation coeffecients
+   * - Transcript ID
+     - transcript1
+     - transcript1
+   * - Correlation
      - 0.7
      - 0.6
    * - P-value
@@ -176,14 +173,14 @@ metabolite,gene,correlation,P
 
 A CSV with PFAM annotations of the genes in the transcriptome. This can be integrated with the rest of the data at different steps (see workflow picture and help commands of each script). The format for these annotations is as follows (note that multiple pfams for a given gene can be be separated by semicolons ;):
 
-   . list-table::
+.. list-table:: Transcript annotation
    :widths: 30 80
    :header-rows: 1
 
-   * - Gene ID
-     - gene1
-     - gene2
-     - gene3
+   * - Transcript ID
+     - transcript1
+     - transcript2
+     - transcript3
    * - Description
      - p450
      - Transferase
@@ -236,7 +233,7 @@ OMICS DATA PREPARATION
 
 
 Prediction
-===========
+~~~~~~~~~~~
 
 ``pathMassTransitions.py``
 
