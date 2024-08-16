@@ -1,6 +1,30 @@
 Usage
 =====
 
+MEANtools workflow
+~~~~~~~~~~~~~~~~~~~~~~
+
+.. image:: images/workflow.png
+   :width: 800
+
+*Arrows*
+
+* Arrows in this workflow show where the input of which script comes from.
+
+* Grey arrows show the simplest workflow: only using metabolome information.
+
+* Red and blue arrows show the additional steps when using transcriptome data as well. Introducing transcriptomic data acts as a filter: reactions without associated correlated transcripts are filtered out. Because of this, when using the blue arrows (recommended), the red arrows are not necessary.
+
+*Squares*
+
+* Blue-colored squares are the DATABASE PREPARATION phase. These scripts parse the RetroRules database to extract the data pertinent to MEANtools. These steps only need to be performed once: upon downloading the RetroRules database.
+
+* Green-colored squares are the OMICS DATA PREPARATION phase.
+
+* Red-colored square is a list annotating the data from the RetroRules database and its PFAM predictions. This can be downloaded from #TODO.
+
+* Grey-colored squares are the PREDICTION phase.
+
 
 Databases availability
 ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -30,14 +54,16 @@ Two inputs are needed for this:
    * The script parses the RetroRules and MetaNetX database to generate a CSV with reaction_ids and their associated mass_transitions. 
 
    .. note::
-   Using the monoisotopic mass is recommended, with the optional flag: --*monoisotopic_mass*
+   
+      Using the monoisotopic mass is recommended, with the optional flag: --*monoisotopic_mass*
 
    * It rounds and analyses the mass_transitions generated in previous step to make it compatible with the mass transitions that will later be identified by rdkit during the virtual molecule generation process. This script also generates some plots showing the transition degeneracy (answering questions such as how many reactions can be attributed to a specific mass_transition number).
 
    * It validates the SMILES in RetroRules reactions with that of the metabolites in MetaNetX. This is because some SMILES have small differences across the two databases. This script basically filters out these rules, leaving only those in which the molecular structures involved are identical as those described by MetaNetX. 
 
    .. note::
-   Using the optional flag --*use_greedy_rxn* is recommended. This flag will make the validation tests ignore differences in missing or extra H atoms (valence).
+   
+      Using the optional flag --*use_greedy_rxn* is recommended. This flag will make the validation tests ignore differences in missing or extra H atoms (valence).
 
    * This script maps the relationships among rules in RR. Because the molecular structures in RR rules are all described in different diameters (substructures), many of these substructures are identical across several rules, or are substructures of more complex structures in other rules. This script identifies and output these relationship to optimize the speed at which rules are tested with the metabolome data. For example, this script will identify that a rule involving the substructure C-N-C does not need to be tested for a specific molecule if a rule involving the substructure C-N was already tested and was not found in the molecule.
 
@@ -52,29 +78,6 @@ Two inputs are needed for this:
       *Small rules*: are the reaction rules described at their smallest diameter, as found in RR.
 
 
-MEANtools workflow
-~~~~~~~~~~~~~~~~~~~~~~
-
-.. image:: images/workflow.png
-   :width: 600
-
-*Arrows*:
-* Arrows in this workflow show where the input of which script comes from.
-
-* Grey arrows show the simplest workflow: only using metabolome information.
-
-* Red and blue arrows show the additional steps when using transcriptome data as well. Introducing transcriptomic data acts as a filter: reactions without associated correlated transcripts are filtered out. Because of this, when using the blue arrows (recommended), the red arrows are not necessary.
-
-*Squares*:
-* Blue-colored squares are the DATABASE PREPARATION phase. These scripts parse the RetroRules database to extract the data pertinent to MEANtools. These steps only need to be performed once: upon downloading the RetroRules database.
-
-* Green-colored squares are the OMICS DATA PREPARATION phase.
-
-* Red-colored square is a list annotating the data from the RetroRules database and its PFAM predictions. This can be downloaded from #TODO.
-
-* Grey-colored squares are the PREDICTION phase.
-
-
 Input Description
 ~~~~~~~~~~~~~~~~~~~~
 
@@ -84,35 +87,42 @@ Input Description
 A feature table from the metabolomics data is a processed data file where rows represent individual features and columns are different variables. For example, a typical feature table has columns like m/z, retention time (RT), and abundance/area-under-the-curve of each feature across samples. 
 
 .. image:: images/featuretable1.png
-   :width: 400
+   :width: 600
 
 
 MEANtools processes the m/z and abundance inforation as separate files. So keeping the feature column intact, it is required that you create two csv files one with feature ids and m/z and another with feature ids and abundance values. Name these files in such a way that you remember which file has which information. 
 
 .. image:: images/featuretable2.png
-   :width: 400
+   :width: 600
 
 File with abundance values will be used in the correlation step, where as file with m/z values will be used in the step where LOTUS database is queried. 
 
-``queryMassNPDB.py`` is used to query the m/z ratio CSV described above in a custom CSV list of molecules (and their monoisomeric mass), or LOTUS database stored as sqlite formatted database. When using a custom list of molecules, this is the format required:
-
-.. list-table:: Customized database
-   :widths: 40 20 40
-   :header-rows: 1
-
-   * - Molecule ID
-     - natural_product_1
-     - natural_product_2
-   * - molecule_monoisomeric_mass
-     - 70
-     - 180
-   * - SMILES
-     - CCCO
-     - CCCCCCCCNC
 
 
-.. note::
-Matching mass/charge ratio data with metabolite structures requires a library of ions indicating how they affect the m/z ratio of a structure. This is provided within the github repository as a csv file. 
+   ``queryMassNPDB.py`` is used to query the LOTUS database (default) using the file with m/z ratio described above or a custom CSV list of molecules (and their monoisomeric mass) can also be queried. 
+
+   .. image:: images/lotus.png
+      :width: 900
+
+   It is also possible to use a custom database by creating a csv file and keeping the same columns as above.
+
+   .. note::
+
+      Matching mass/charge ratio data with metabolite structures requires a library of ions indicating how they affect the m/z ratio of a structure. This is provided within the github repository as a csv file. 
+
+      **Input**
+         * Adducts file (available in the github repository)
+         * CSV of feature_id,m/z
+         * LOTUS SQLite
+         * Taxa information (Provide species/genus/phylum/order name). This will select compounds specific to the selected taxa
+         * Database (-dn) and table name (-tn)
+         * Chunk size (-c; it is the number of features that is processed together). Larger chunk size will slow the annotation process. 
+         * PPM (-p)
+      **Output**
+         * The script creates a table in the project's SQLite database.
+         * CSV of structure predictions for each mass_signature (Optional)
+
+
 
 A CSV with the metabolome abundance of each metabolic feature (rows) in each sample (columns). A header must be included, ``with each sample being identically named in the transcriptome``.
 
