@@ -8,7 +8,3 @@ Python-based dependencies
    ``pip install meantools``
 
 External dependencies
-
-   
-
-
