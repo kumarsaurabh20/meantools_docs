@@ -12,13 +12,11 @@ The RetroRules database is up-to-date and ready to use. The *formatDatabase.py* 
 
 **Step 1** Query the LOTUS database
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	
+``queryMassNPDB_mod.py -add docs/ESI-MS-adducts.csv -ms Jeon_tomato/test_data/test.bac.metabolome.csv -db lotus -dbp demo.sqlite -dtn Jeon_dummy_falcarindiol -t Solanum -dn test.sqlite -tn test_metabolites -c 20 -p 20 -v True``
 
 	.. note::
-	
 		The adducts file is available in the github repository *data/ESI-MS-adducts.csv*
-
-	
-	``queryMassNPDB_mod.py -add docs/ESI-MS-adducts.csv -ms Jeon_tomato/test_data/test.bac.metabolome.csv -db lotus -dbp demo.sqlite -dtn Jeon_dummy_falcarindiol -t Solanum -dn test.sqlite -tn test_metabolites -c 20 -p 20 -v True``
 
 **Output**
 
@@ -34,7 +32,6 @@ The outcomes are saved in the test.sqlite database within the *test_metabolites*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 	.. note::
-
 		Make sure to keep the same column names in the transcriptomics and metabolomics CSV files
 
 
@@ -55,8 +52,8 @@ These MR values are processed through a decay function that transforms mutual ra
 .. image:: images/correlation3.png
    :width: 800
 
-	.. note::
 
+	.. note::
 		Users can choose decay rates larger than 50, depending on the expected size of the network. For more information refer, Wisecaver et al. 2017.
 
 To identify functional clusters (FCs; also known as modules or network hubs) within each corresponding network, MEANtools employs ClusterONE, a tool that utilizes edge weights to group genes and metabolites exhibiting similar expression and abundance patterns. The outcomes from ClusterONE are stored in four tables named: *bacterial_clone_DR_5*, *bacterial_clone_DR_10*, *bacterial_clone_DR_25*, and *bacterial_clone_DR_50*.
@@ -67,7 +64,6 @@ To identify functional clusters (FCs; also known as modules or network hubs) wit
 In this table, each row corresponds to a functional cluster. Various columns detail the characteristics of the FC, including its id, size (the count of genes and metabolites within the FC), density, the number of internal edges, the number of external edges, quality, and a p-value (which is calculated based on the inflow and outflow of edges from the FC). The final column enumerates the genes and metabolites, separated by spaces.
 
 	.. note::
-
 		Users can use this file to create networks using the *plot_graph.py* script.
 
 
