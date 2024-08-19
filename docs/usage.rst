@@ -99,29 +99,27 @@ File with abundance values will be used in the correlation step, where as file w
 
 
 
-   ``queryMassNPDB.py`` is used to query the LOTUS database (default) using the file with m/z ratio described above or a custom CSV list of molecules (and their monoisomeric mass) can also be queried. 
+``queryMassNPDB.py`` is used to query the LOTUS database (default) using the file with m/z ratio described above or a custom CSV list of molecules (and their monoisomeric mass) can also be queried. 
 
-   .. image:: images/lotus.png
-      :width: 900
+.. image:: images/lotus.png
+      :width: 1000
 
-   It is also possible to use a custom database by creating a csv file and keeping the same columns as above.
+It is also possible to use a custom database by creating a csv file and keeping the same columns as above.
 
    .. note::
-
       Matching mass/charge ratio data with metabolite structures requires a library of ions indicating how they affect the m/z ratio of a structure. This is provided within the github repository as a csv file. 
 
-      **Input**
-         * Adducts file (available in the github repository)
-         * CSV of feature_id,m/z
-         * LOTUS SQLite
-         * Taxa information (Provide species/genus/phylum/order name). This will select compounds specific to the selected taxa
-         * Database (-dn) and table name (-tn)
-         * Chunk size (-c; it is the number of features that is processed together). Larger chunk size will slow the annotation process. 
-         * PPM (-p)
-      **Output**
-         * The script creates a table in the project's SQLite database.
-         * CSV of structure predictions for each mass_signature (Optional)
-
+**Input**
+   * Adducts file (available in the github repository)
+   * CSV of feature_id,m/z
+   * LOTUS SQLite
+   * Taxa information (Provide species/genus/phylum/order name). This will select compounds specific to the selected taxa
+   * Database (-dn) and table name (-tn)
+   * Chunk size (-c; it is the number of features that is processed together). Larger chunk size will slow the annotation process. 
+   * PPM (-p)
+**Output**
+   * The script creates a table in the project's SQLite database.
+   * CSV of structure predictions for each mass_signature (Optional)
 
 
 A CSV with the metabolome abundance of each metabolic feature (rows) in each sample (columns). A header must be included, ``with each sample being identically named in the transcriptome``.
@@ -247,7 +245,7 @@ Prediction
 
 ``pathMassTransitions.py``
 
-   This script integrates the metabolome and transcriptome data with the RR and MetaNetX data. In short, this script filters the mass transitions associated with RR reactions according to the mass signatures found in the metabolome. In this manner, if the metabolome has no metabolites with a mass of a 1000, then reactions involving masses of a 1000 are filtered out.
+   This script integrates the metabolome and transcriptome data with the RR and MetaNetX data. In short, this script filters the mass transitions associated with RR reactions according to the mass signatures found in the metabolome. In this manner, if the metabolome has no metabolites with a mass of 1000, then reactions involving masses of 1000 are filtered out.
 
    **Optional arguments**
 
