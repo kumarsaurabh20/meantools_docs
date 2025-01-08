@@ -195,8 +195,8 @@ A CSV with PFAM annotations of the genes in the transcriptome. This can be integ
      - SQHop_cyclase_C;SQHop_cyclase_N
 
 
-OMICS DATA PREPARATION
-~~~~~~~~~~~~~~~~~~~~~~~
+Omics data preparation
+~~~~~~~~~~~~~~~~~~~~~~
 
 ``queryMassLOTUS.py``
 

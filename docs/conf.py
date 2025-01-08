@@ -3,7 +3,7 @@
 # -- Project information
 
 project = 'meantools_docs'
-copyright = '2024, Kumar'
+copyright = '2025, Kumar'
 author = 'Kumar'
 
 release = '0.1'

@@ -2,6 +2,7 @@ Results
 ========
 
 **Format Database**
+~~~~~~~~~~~~~~~~~~~~
 
 The first output is from the *formatDatabase.py* script where multiple files are genrated in the *format_database* folder.
 
@@ -34,6 +35,7 @@ This file includes reaction rules represented at their smallest diameter as defi
 
 
 **Correlation**
+~~~~~~~~~~~~~~~~
 
 The results of correlation analysis is available in the SQLite database under the database table with a name provided by the user.
 
@@ -57,6 +59,7 @@ The results are saved in an SQLite database, where each mass feature is linked t
 
 
 **Map mass trantions**
+~~~~~~~~~~~~~~~~~~~~~~~
 
 This step integrates metabolome and transcriptome data with RetroRules and MetaNetX datasets. It filters mass transitions associated with RetroRules reactions based on the mass signatures present in the metabolome. Each mass signature is then designated as a substrate or product according to reactions in the RetroRules database.
 
@@ -78,6 +81,7 @@ The *structures.csv* and *structure_predictions.csv* files detail the mass signa
 The *reactions.csv* file serves as the primary results file, offering a comprehensive summary of the predicted reactions, the structures associated with those reactions, and their correlated enzymes.
 
 **Visualization**
+~~~~~~~~~~~~~~~~~~
 
 This step utilizes *paveWays.py* script and creates tables and visualizations from the predicted reactions that are easier to interpret. This includes a folder with SVGs, and tables describing the predicted pathways, structures and their characteristics
 
