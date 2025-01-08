@@ -1,8 +1,8 @@
 Results
 ========
 
-**Format Database**
-~~~~~~~~~~~~~~~~~~~~
+Format Database
+~~~~~~~~~~~~~~~~
 
 The first output is from the *formatDatabase.py* script where multiple files are genrated in the *format_database* folder.
 
@@ -34,8 +34,8 @@ This file contains reaction rules that describe substructures which cannot be fu
 This file includes reaction rules represented at their smallest diameter as defined in the RetroRules database.
 
 
-**Correlation**
-~~~~~~~~~~~~~~~~
+Correlation
+~~~~~~~~~~~~
 
 The results of correlation analysis is available in the SQLite database under the database table with a name provided by the user.
 
@@ -50,7 +50,8 @@ Correlations are transformed into mutual ranks, which are then converted into ed
 Each individual network, defined by its specific decay rate, is clustered using the ClusterONE tool. The resulting modules, referred to as functional clusters (FCs) in our work, are stored as separate tables in the database. For instance, in the table *Jeon_bac_correlations_clone_DR_10* shown in the figure above, each row represents a functional cluster (FC) derived from the network with decay rate value of 10.
 
 
-**Structures database mapping**
+Structure database mapping
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The results are saved in an SQLite database, where each mass feature is linked to a structural database ID. By default, the LOTUS database is used, but users can opt to use a custom database provided it follows the same format.
 
@@ -58,8 +59,8 @@ The results are saved in an SQLite database, where each mass feature is linked t
    :width: 800
 
 
-**Map mass trantions**
-~~~~~~~~~~~~~~~~~~~~~~~
+Map mass trantions
+~~~~~~~~~~~~~~~~~~
 
 This step integrates metabolome and transcriptome data with RetroRules and MetaNetX datasets. It filters mass transitions associated with RetroRules reactions based on the mass signatures present in the metabolome. Each mass signature is then designated as a substrate or product according to reactions in the RetroRules database.
 
@@ -80,8 +81,8 @@ The *structures.csv* and *structure_predictions.csv* files detail the mass signa
 
 The *reactions.csv* file serves as the primary results file, offering a comprehensive summary of the predicted reactions, the structures associated with those reactions, and their correlated enzymes.
 
-**Visualization**
-~~~~~~~~~~~~~~~~~~
+Visualization
+~~~~~~~~~~~~~~
 
 This step utilizes *paveWays.py* script and creates tables and visualizations from the predicted reactions that are easier to interpret. This includes a folder with SVGs, and tables describing the predicted pathways, structures and their characteristics
 
