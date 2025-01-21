@@ -16,7 +16,7 @@ To use MEANtools, prepare the meantools repository:
    cd meantools
 
 .. warning::
-   MEANtools is tested on Pandas=1.4.3. From version >=2.0.0, the support for *append* function has been deprecated for dataframes. We will fix this issue in the upcoming version. But for the current version, please install Pandas -v1.4.3 or <2.0.0
+   MEANtools is tested on Python=3.8.13 and Pandas=1.4.3. From Pandas version >=2.0.0, the support for *append* function has been deprecated for dataframes. We will fix the dependency issues in the upcoming version.
 
 .. note::
    Download additional files from https://doi.org/10.5281/zenodo.14651195 and move them into the directory where you cloned meantools. Additional files include:
