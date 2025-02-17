@@ -13,7 +13,7 @@ The RetroRules database is up-to-date and ready to use. The *formatDatabase.py* 
 **Step 1** Query the LOTUS database
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	
-``queryMassNPDB_mod.py -add docs/ESI-MS-adducts.csv -ms Jeon_tomato/test_data/test.bac.metabolome.csv -db lotus -dbp demo.sqlite -dtn Jeon_dummy_falcarindiol -t Solanum -dn test.sqlite -tn test_metabolites -c 20 -p 20 -v True``
+``queryMassNPDB.py -add docs/ESI-MS-adducts.csv -ms Jeon_tomato/test_data/test.bac.metabolome.csv -db lotus -dbp demo.sqlite -dtn Jeon_dummy_falcarindiol -t Solanum -dn test.sqlite -tn test_metabolites -c 20 -p 20 -v True``
 
 	.. note::
 		The adducts file is available in the github repository *data/ESI-MS-adducts.csv*
@@ -35,7 +35,7 @@ The outcomes are saved in the test.sqlite database within the *test_metabolites*
 		Make sure to keep the same column names in the transcriptomics and metabolomics CSV files
 
 
-``corrMultiomics_mod.py -ft Jeon_tomato/test_data/test.bac.abundance.csv -qm Jeon_tomato/test_data/test.bac.rnaseq.rpkm.csv -mr -cl -mad -r -c 0.1 -w 0.01 -mdr 5 10 25 50 -t 4 -dn test.sqlite -tn bacterial``
+``corrMultiomics.py -ft data/test_data/test.bac.abundance.csv -qm data/test_data/test.bac.rnaseq.rpkm.csv -mr -cl -mad -r -c 0.1 -w 0.01 -mdr 5 10 25 50 -t 4 -dn test.sqlite -tn bacterial``
 
 This step saves the results in the test.sqlite database across various tables. The initial table, named *bacterial*, stores the correlation between each mass feature and individual transcripts/genes. Each correlation coefficient is accompanied by a p-value, indicating its statistical significance. 
 
@@ -72,7 +72,7 @@ In this table, each row corresponds to a functional cluster. Various columns det
 
 After completing the correlation step, proceed to analyze the functional clusters derived from each network using different decay rates. This script facilitates the annotation of functional clusters and enables investigation into whether genes and metabolites from known pathways cluster together. Additional scripts provided in the GitHub repository can be used to generate network graphs based on these functional clusters.
 
-``merge_clusters.py -ft Jeon_tomato/test_data/test.bac.abundance.csv -qm Jeon_tomato/test_data/test.bac.rnaseq.rpkm.csv -a -f Jeon_tomato/annotation/tomato.new.pfams_description.csv -mc -mm overlap -dr 25 -dn test.sqlite``
+``merge_clusters.py -ft data/test_data/test.bac.abundance.csv -qm data/test_data/test.bac.rnaseq.rpkm.csv -a -f data/test_data/pfams_description.csv -mc -mm overlap -dr 25 -dn test.sqlite``
 
 .. image:: images/merge_cluster.png
    :width: 800
@@ -85,7 +85,7 @@ Based on the selected method for merging functional clusters, the script will co
 
 This step combines metabolome and transcriptome data with information from RR and MetaNetX. Essentially, it filters mass transitions linked to RR reactions based on the mass signatures present in the metabolome. For example, if there are no metabolites with a mass of 1000 in the metabolome, then the script will exclude reactions that involve masses of 1000.
 
-``pathMassTransitions_mod.py -c Jeon_tomato/test_data/test_merged_cluster_filtered.csv -t test_db/format_database/MassTransitions.csv -dn test.sqlite -tn transitions_test -ct bacterial -mt test_metabolites -p pfam_RR_annotation_file.csv -a Jeon_tomato/Bacterial/bacterial.tomato.pfams.sol.csv -s loose -cc 0.1 -cpc 1 -v``
+``pathMassTransitions.py -c test_merged_cluster_filtered.csv -t test_db/format_database/MassTransitions.csv -dn test.sqlite -tn transitions_test -ct bacterial -mt test_metabolites -p Combined_small_middle_big_datasets.csv -a data/test_data/pfams.csv -s strict -cc 0.1 -cpc 1 -v``
 
 
 .. image:: images/pathtransitions.png
@@ -98,7 +98,7 @@ This step saves the results in the test.sqlite database within *transitions_test
 
 This script integrates all data to produce pathway predictions. Here, all input is integreated, and all results are output as CSV tables that can be examined in a text editor, EXCEL, cytoscape.
 
-``heraldPathways_mod.py -c Jeon_tomato/test_data/test_merged_cluster_filtered.csv -r test_db/format_database/ValidateRulesWithOrigins.csv -m test_db/format_database/base_rules.csv -p pfam_RR_annotation_file.csv -a Jeon_tomato/Bacterial/bacterial.tomato.pfams.sol.csv -s loose -i 3 -dn test.sqlite -tn test_herald -ct bacterial -mt test_metabolites -tt transitions_test_falca -v -dv -o test_herald -d pfams_dict.csv``
+``heraldPathways.py -c test_merged_cluster_filtered.csv -r test_db/format_database/ValidateRulesWithOrigins.csv -m test_db/format_database/base_rules.csv -p Combined_small_middle_big_datasets.csv -a data/test_data/bacterial.tomato.pfams.sol.csv -s loose -i 3 -dn test.sqlite -tn test_herald -ct bacterial -mt test_metabolites -tt transitions_test_falca -v -dv -o test_herald -d data/pfams_dict.csv``
 
 	#. The first output file is a summary (Summary.csv) of the number of structures predicted in multiple iterations. Here initial structure is the number of stricture in the database. New structures are predicted in the virtual molecule generation process.
 
@@ -144,7 +144,7 @@ This script integrates all data to produce pathway predictions. Here, all input 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 This step refines the results by producing visualizations and curated tables of predicted pathways, making them simpler to interpret. It generates tables and visualizations from the predicted reactions, filtering based on user specifications. The essential input for this script is the structure predictions from heraldPathways.
 
-``paveWays.py -sp test_herald/structure_predictions.csv -of test_paveWays -r test_herald/reactions.csv -praf pfam_RR_annotation_file.csv -gaf Jeon_tomato/Bacterial/bacterial.tomato.pfams.sol.csv -rr loose -pam True -pup True -v``
+``paveWays.py -sp test_herald/structure_predictions.csv -of test_paveWays -r test_herald/reactions.csv -praf Combined_small_middle_big_datasets.csv -gaf data/test_data/pfams.csv -rr strict -pam True -pup True -v``
 
 The resulting folder structure looks like this:
 

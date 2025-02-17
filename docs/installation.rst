@@ -19,7 +19,7 @@ To use MEANtools, prepare the meantools repository:
    MEANtools is tested on Python=3.8.13 and Pandas=1.4.3. From Pandas version >=2.0.0, the support for *append* function has been deprecated for dataframes. We will fix the dependency issues in the upcoming version.
 
 .. note::
-   Download additional files from https://doi.org/10.5281/zenodo.14651195 and move them into the directory where you cloned meantools. Additional files include:
+   Download additional files from https://doi.org/10.5281/zenodo.14864196 and move them into the directory where you cloned meantools. Additional files include:
       #. SQLite formatted LOTUS database
       #. RetroRules cross-referenced data. Mentioned in the paper as *loose*, *medium*, and *strict* dataset.
       #. EC-PFAM mapping file.
