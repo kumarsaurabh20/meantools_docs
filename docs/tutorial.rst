@@ -144,7 +144,7 @@ This script integrates all data to produce pathway predictions. Here, all input 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 This step refines the results by producing visualizations and curated tables of predicted pathways, making them simpler to interpret. It generates tables and visualizations from the predicted reactions, filtering based on user specifications. The essential input for this script is the structure predictions from heraldPathways.
 
-``paveWays.py -sp test_herald/structure_predictions.csv -of test_paveWays -r test_herald/reactions.csv -praf Combined_small_middle_big_datasets.csv -gaf data/test_data/pfams.csv -rr strict -pam True -pup True -v``
+``paveWays.py -sp test_herald/structure_predictions.csv -of test_paveWays -r test_herald/reactions.csv -praf Combined_small_middle_big_datasets.csv -gaf data/test_data/pfams.csv -rr strict -pdg -pam -pup -v``
 
 The resulting folder structure looks like this:
 
