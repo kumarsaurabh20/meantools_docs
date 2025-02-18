@@ -23,3 +23,4 @@ To use MEANtools, prepare the meantools repository:
       #. SQLite formatted LOTUS database
       #. RetroRules cross-referenced data. Mentioned in the paper as *loose*, *medium*, and *strict* dataset.
       #. EC-PFAM mapping file.
+      #. RNA-seq normalised gene expression matrix from Jeon et al. (2020).
