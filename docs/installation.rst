@@ -11,9 +11,9 @@ To use MEANtools, prepare the meantools repository:
    export SKLEARN_ALLOW_DEPRECATED_SKLEARN_PACKAGE_INSTALL=True
    export LC_ALL=en_US.UTF-8
    export LANG=en_US.UTF-8
-   conda env update -f environment.yml
    git clone https://github.com/kumarsaurabh20/meantools.git
    cd meantools
+   conda env update -f environment.yml
 
 .. warning::
    MEANtools is tested on Python=3.8.13 and Pandas=1.4.3. From Pandas version >=2.0.0, the support for *append* function has been deprecated for dataframes. We will fix the dependency issues in the upcoming version.
